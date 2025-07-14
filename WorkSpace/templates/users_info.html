@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block head %}User & Reservation Overview{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100"> <!-- Flex wrapper -->
+
+    <div class="container mt-5 pt-5 flex-grow-1 mb-3">
+        <h2 class="mb-4 text-center">User & Reservation Overview</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for user in users %}
+            <div class="col">
+                <div class="card shadow-sm h-100 border-0 rounded-4 p-3">
+                    <div class="card-body">
+                        <h5 class="fw-bold text-primary">{{ user.fullname }}</h5>
+                        <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+                        <p class="mb-2"><strong>Role:</strong> {{ user.role }}</p>
+
+                        <hr class="my-3">
+
+                        <h6 class="fw-semibold">Vehicles:</h6>
+                        {% if user.vehicles %}
+                            <ul class="list-unstyled small">
+                                {% for v in user.vehicles %}
+                                <li class="text-muted">• <strong>{{ v.registration_number }}</strong> ({{ v.vehicle_type }})</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No vehicles added</p>
+                        {% endif %}
+
+                        <hr class="my-3">
+
+                        <h6 class="fw-semibold">Reservations:</h6>
+                        {% if user.reservations %}
+                            <div class="accordion accordion-flush" id="accordion{{ user.id }}">
+                                {% for r in user.reservations %}
+                                <div class="accordion-item border rounded mb-2">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ r.id }}">
+                                            Spot #{{ r.spot_id }} —
+                                            {% if r.leaving_timestamp and r.leaving_timestamp <= now %}
+                                                <span class="badge bg-success ms-2">Completed</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark ms-2">Active</span>
+                                            {% endif %}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ r.id }}" class="accordion-collapse collapse">
+                                        <div class="accordion-body small">
+                                            <p><strong>Lot ID:</strong> {{ r.lot_id }}</p>
+                                            <p><strong>Start:</strong> {{ r.parking_timestamp.strftime('%d %b %Y, %I:%M %p') }}</p>
+                                            <p><strong>End:</strong>
+                                                {% if r.leaving_timestamp %}
+                                                    {{ r.leaving_timestamp.strftime('%d %b %Y, %I:%M %p') }}
+                                                {% else %}
+                                                    Ongoing
+                                                {% endif %}
+                                            </p>
+                                            <p><strong>Cost:</strong>
+                                                {% if r.leaving_timestamp and r.leaving_timestamp <= now %}
+                                                    ₹{{ r.parking_cost }}
+                                                {% else %}
+                                                    Pending
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No reservations made</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div> <!-- End flex wrapper -->
+{% endblock %}

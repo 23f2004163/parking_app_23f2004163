@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block head %} Dashboard {% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5 mb-5">
+    <h2 class="text-center mb-5">Admin Dashboard</h2>
+
+    <!-- Chart 1: Reservations per Lot -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <canvas id="reservationChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Chart 2: Booked vs Available Spots -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <canvas id="spotChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Chart 1: Reservations per Lot
+    const reservationCtx = document.getElementById('reservationChart').getContext('2d');
+    new Chart(reservationCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ lot_names | tojson }},
+            datasets: [{
+                label: 'Number of Reservations',
+                data: {{ reservation_counts | tojson }},
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    // Chart 2: Booked vs Available
+    const spotCtx = document.getElementById('spotChart').getContext('2d');
+    new Chart(spotCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Booked Spots', 'Available Spots'],
+            datasets: [{
+                data: [{{ booked_spots }}, {{ available_spots }}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true }
+    });
+</script>
+{% endblock %}

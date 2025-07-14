@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 70px;">
+  <div class="login-card shadow p-4 rounded bg-white">
+    <h3 class="text-center login-title mb-4">👤 User Profile</h3>
+
+    <ul class="list-group list-group-flush mb-3">
+      <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+      <li class="list-group-item"><strong>Full Name:</strong> {{ user.fullname }}</li>
+      <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+      <li class="list-group-item"><strong>Role:</strong> <span class="badge bg-secondary">{{ user.role }}</span></li>
+    </ul>
+
+    <div class="d-grid">
+      <a href="{{url_for('routes.update_profile')}}" class="btn btn-outline-primary ">Update</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

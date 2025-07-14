@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block head %} My Reservations {% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100"> <!-- Flex wrapper -->
+
+    <div class="container mt-5 pt-5 mb-5 flex-grow-1">
+        <h2 class="mb-4">My Reservations</h2>
+
+        {% if reservations %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for r in reservations %}
+            <div class="col">
+                <div class=" card offer-content p-4 rounded-4 shadow {% if r.leaving_timestamp %}border-success{% else %}border-warning{% endif %}">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Spot #{{ r.spot_id }} (Lot #{{ r.lot_id }})
+                            {% if r.leaving_timestamp %}
+                                <span class="badge bg-success float-end">Checked Out</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark float-end">Active</span>
+                            {% endif %}
+                        </h5>
+                        <p class="card-text"><strong>Vehicle:</strong> {{ r.vehicle.registration_number }} ({{ r.vehicle.vehicle_type }})</p>
+                        <p class="card-text"><strong>Start:</strong> {{ r.parking_timestamp.strftime('%d %B %Y, %I:%M %p') }}</p>
+                        <p class="card-text"><strong>End:</strong> 
+                            {% if r.leaving_timestamp %}
+                                {{ r.leaving_timestamp.strftime('%d %B %Y, %I:%M %p') }}
+                            {% else %}
+                                Not checked out yet
+                            {% endif %}
+                        </p>
+                        <p class="card-text"><strong>Cost:</strong>
+                            {% if r.parking_cost %}
+                                ₹{{ r.parking_cost }}
+                            {% else %}
+                                Available during checkout
+                            {% endif %}
+                        </p>
+
+                        {% if not r.leaving_timestamp %}
+                        <div class="text-center mt-4">
+                            <a href="{{url_for('routes.checkout' , reservation_id = r.id)}}" class="btn btn-primary">Check Out</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('routes.user') }}" class="btn btn-secondary">Back</a>
+        </div>
+        {% else %}
+        <p class="text-muted">You haven't made any reservations yet.</p>
+        <div class="text-center">
+            <a href="{{ url_for('routes.user') }}" class="btn btn-primary mt-3">Explore Parking Lots</a>
+        </div>
+        {% endif %}
+    </div>
+
+</div> <!-- End flex wrapper -->
+{% endblock %}

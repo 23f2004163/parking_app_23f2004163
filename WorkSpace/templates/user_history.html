@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %} Reservation History {% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100">
+  <div class="container mt-5 pt-5 flex-grow-1">
+    <h2 class="mb-4 text-center">Your Reservation History</h2>
+    <canvas id="reservationChart" height="100"></canvas>
+  </div>
+
+  <!-- Optional: Place footer here if you have one -->
+
+</div> <!-- End of flex wrapper -->
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('reservationChart').getContext('2d');
+  const reservationChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ labels|tojson }},
+      datasets: [{
+        label: 'Reservations per Month',
+        data: {{ counts|tojson }},
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        borderRadius: 5
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          },
+          title: {
+            display: true,
+            text: 'Number of Reservations'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Month'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+
+{% endblock %}

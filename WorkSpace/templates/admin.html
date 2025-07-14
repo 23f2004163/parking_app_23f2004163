@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+
+{% block head %} Home {% endblock %}
+
+
+
+{% block content %}
+
+<!-- Header-->
+<header id = "header-admin" class = "vh-100 carousel slide" data-bs-ride = "carousel" style = "padding-top: 104px;">
+        <div class = "container h-100 d-flex align-items-center carousel-inner">
+            <div class = "text-center carousel-item active">
+                <h2 class = "text-capitalize text-white">Easy parking</h2>
+                <h1 class = "text-uppercase py-2 fw-bold text-white">Swift-park</h1>
+                <a href = "" class = "btn mt-3 text-uppercase">book now</a>
+            </div>
+            <div class = "text-center carousel-item">
+                <h2 class = "text-capitalize text-white">best price & offer</h2>
+                <h1 class = "text-uppercase py-2 fw-bold text-white">new season</h1>
+                <a href = "#" class = "btn mt-3 text-uppercase">buy now</a>
+            </div>
+        </div>
+
+        <button class = "carousel-control-prev" type = "button" data-bs-target="#header-admin" data-bs-slide = "prev">
+            <span class = "carousel-control-prev-icon"></span>
+        </button>
+        <button class = "carousel-control-next" type = "button" data-bs-target="#header-admin" data-bs-slide = "next">
+            <span class = "carousel-control-next-icon"></span>
+        </button>
+    </header>
+    <!-- end of header -->
+
+
+<div class="container mt-5 text-center">
+    <h1 class="mb-3">Manage Parking Lot</h1>
+
+    <!-- Add Parking Lot Button -->
+    <div class="mb-5">
+        <a href="{{ url_for('routes.create_lot')}}" class="btn btn-success px-4 py-2">
+            + Add Parking Lot
+        </a>
+    </div>
+
+    <!-- Search Form -->
+<form method="GET" action="{{ url_for('routes.admin_search_form') }}">
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6 col-sm-8 mb-2">
+            <input type="text" name="search" class="form-control form-control-lg"
+                   placeholder="Search by location or name..." value="{{ search }}">
+        </div>
+
+        <div class="col-md-3 col-sm-4 mb-2 d-flex align-items-center">
+            <div class="form-check form-switch ms-3">
+                <input class="form-check-input" type="checkbox" name="sort" id="sortCheapest" value="cheapest" {% if sort == 'cheapest' %}checked{% endif %}>
+                <label class="form-check-label" for="sortCheapest">
+                Sort by Cheapest
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-4">
+            <button type="submit" class="btn btn-primary btn-lg w-100">Search</button>
+        </div>
+    </div>
+</form>
+
+
+<!-- Parking Lot Cards -->
+    <div class="row justify-content-center g-4">
+        {% if lots %}
+            {% for lot in lots %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
+                <div class="card shadow-sm w-100" style="max-width: 300px;">
+                    <div class="card-body text-start">
+                        <h5 class="card-title fw-bold">{{ lot.prime_location_name }}</h5>
+                        <p class="card-text mb-1">Location: {{ lot.address }}</p>
+                        <p class="card-text mb-3">Price: ₹{{ lot.price }} per hour</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('routes.update' , lot_id = lot.id)}}" class="btn btn-outline-primary btn-sm">Update</a>
+                            <a href="{{url_for('routes.delete_lot' , lot_id = lot.id)}}" class="btn btn-outline-danger btn-sm ms-2"
+                               onclick="return confirm('Are you sure you want to delete this parking lot?');">Delete</a>
+                            <a href="{{ url_for('routes.view_spots' , lot_id = lot.id)}}" class="btn btn-outline-primary btn-sm ms-2">View Spot</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center mt-4">
+                {% if search  %}
+                    <p>No parking lots found for "{{ search }}"</p>
+                {% else %}
+                    <p>No parking lots available yet.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div> 
+
+
+<!-- Offer Section -->
+<section id="offer-banner" class="py-5 mt-5 text-white">
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center text-center text-lg-start">
+            <div class="col-lg-8">
+                <div class="offer-content p-4 rounded-4 shadow">
+                    <span class="badge bg-warning text-dark mb-2 fs-5">Admin Notice </span>
+                    <h2 class="display-5 fw-bold">🔥Designed for exclusive parking </h2>
+                    <p class="lead mb-4">Cheapest parking lots available and open for booking</p>
+                    <a href="#" class="btn btn-light px-4 py-2 fw-semibold">Explore </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- blogs -->
+<section id="blogs" class="py-5">
+    <div class="container">
+        <div class="title text-center py-5">
+            <h2 class="position-relative d-inline-block">Our Latest Blog</h2>
+        </div>
+
+        <div class="row g-4">
+            <!-- Blog 1 -->
+            <div class="card border-0 col-md-6 col-lg-4 bg-transparent my-3">
+                <img src="{{ url_for('static' , filename = 'images/blog_img_3.jpeg')}}" alt="Smart Parking Systems">
+                <div class="card-body px-0">
+                    <h4 class="card-title">How Smart Parking Systems Are Changing Urban Life</h4>
+                    <p class="card-text mt-3 text-muted">
+                        Learn how AI-powered parking systems are reducing congestion and improving the efficiency of urban transportation.
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <span class="fw-bold">Author: </span>Priya S.
+                        </small>
+                    </p>
+                    <a href="#" class="btn">Read More</a>
+                </div>
+            </div>
+
+            <!-- Blog 2 -->
+            <div class="card border-0 col-md-6 col-lg-4 bg-transparent my-3">
+                <img src="{{ url_for('static' , filename = 'images/blog_img_1.jpg')}}" alt="Parking Safety Tips">
+                <div class="card-body px-0">
+                    <h4 class="card-title">Top 5 Safety Tips When Using Public Parking Lots</h4>
+                    <p class="card-text mt-3 text-muted">
+                        From choosing the right spot to protecting your belongings — here are practical tips to keep your car safe.
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <span class="fw-bold">Author: </span>Arjun M.
+                        </small>
+                    </p>
+                    <a href="#" class="btn">Read More</a>
+                </div>
+            </div>
+
+            <!-- Blog 3 -->
+            <div class="card border-0 col-md-6 col-lg-4 bg-transparent my-3">
+                <img src="{{ url_for('static' , filename = 'images/blog_img_2.jpg')}}" alt="Eco-Friendly Parking">
+                <div class="card-body px-0">
+                    <h4 class="card-title">Eco-Friendly Parking: Sustainability in Motion</h4>
+                    <p class="card-text mt-3 text-muted">
+                        Discover how green parking solutions are making a difference in reducing carbon emissions and saving energy.
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <span class="fw-bold">Author: </span>Ananya R.
+                        </small>
+                    </p>
+                    <a href="#" class="btn">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end of blogs -->
+
+
+
+{% endblock %}

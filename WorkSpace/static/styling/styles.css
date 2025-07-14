@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;500;700&family=Poppins:wght@300;400;500&display=swap');
+
+:root{
+    --lg-font: 'Kaisei Tokumin', serif;
+    --sm-font: 'Poppins', sans-serif;
+    --color: --white;
+}
+
+
+body {
+  font-family: 'Poppins' , 'sans-serif';
+}
+
+.navbar{
+    -webkit-box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand img{
+    width: 30px;
+}
+.navbar-brand span{
+    letter-spacing: 2px;
+    font-family: var(--lg-font);
+}
+.nav-link:hover{
+    color: var(--pink)!important;
+}
+.nav-item{
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+
+.login-card {
+      background-color: #ffffff;
+      border-radius: 1rem;
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-title {
+      font-weight: bold;
+      color: #2980b9;
+      font-family: var(--lg-font);
+    }
+
+    /* media queries */
+@media(min-width: 992px){
+    .nav-item{
+        border-bottom: none;
+    }
+}
+
+/* header */
+#header-user{
+    background: url(../images/pexels-introspectivedsgn-32482259.jpg)  top/cover no-repeat;
+}
+
+#header-admin{
+    background : url(../images/pexels-introspectivedsgn-32482259.jpg)  top/cover no-repeat;
+}
+
+.carousel-inner h1{
+    font-size: 60px;
+    font-family: var(--lg-font);
+}
+.carousel-item .btn{
+    border-color: #fff!important;
+}
+.carousel-item .btn:hover{
+    border-color: var(--color)!important;
+}
+
+/* title */
+.title h2::before{
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 50px;
+    background-color: var(--pink);
+    left: -20px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+}
+
+#offer-banner {
+    background: linear-gradient(to right, #1f1c2c, #928dab);
+    padding: 80px 0; /* Add balanced spacing top and bottom */
+}
+
+.offer-content {
+    background-color: rgba(255, 255, 255, 0.03); /* subtle glassy */
+    border: 2px solid rgba(255, 255, 255, 0.08); /* soft border */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* softer shadow */
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    padding: 40px;
+}
+
+
+
+/* Better contrast for input fields */
+form .form-control {
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: border 0.3s;
+}
+form .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
+}
+
+/* Card styling for parking lots */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons */
+.btn-primary {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Responsive tweak */
+@media (max-width: 576px) {
+    .form-control-lg {
+        font-size: 1rem;
+        padding: 0.6rem 0.75rem;
+    }
+}
+
+
+
+
+#blogs {
+    background: #f8f9fa;
+}
+
+#blogs .card {
+    border-radius: 15px;
+    background: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+#blogs .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+
+#blogs .card img {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+#blogs .card-body {
+    padding: 1.5rem;
+}
+
+#blogs .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+#blogs .card-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+#blogs .btn {
+    background-color: #0d6efd;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+#blogs .btn:hover {
+    background-color: #084298;
+    color: white;
+}
+
+
+
