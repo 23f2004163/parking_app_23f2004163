@@ -23,9 +23,9 @@ def login() :
             login_user(user , remember = True) 
             flash('Logged in succesfully!' , category = 'success') 
             if user.role == 'admin' : 
-                return redirect(url_for('routes.admin')) 
+                return redirect(url_for('routes.admin_dashboard')) 
             else : 
-                return redirect(url_for('routes.user')) 
+                return redirect(url_for('routes.user_dashboard')) 
         else : 
             flash('Invalid credentials' , category = 'error') 
         

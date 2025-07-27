@@ -39,6 +39,7 @@ class ParkingLot(db.Model):
     address = db.Column(db.String(250), nullable=False)
     pin_code = db.Column(db.Integer, nullable=False)
     maximun_number_of_spots = db.Column(db.Integer, nullable=False)
+    is_deleted = db.Column(db.Boolean , default = False , nullable = False)
 
     spots = db.relationship('ParkingSpot', backref='lot', lazy=True)
     reservations = db.relationship('Reservation', backref='lot', lazy=True)

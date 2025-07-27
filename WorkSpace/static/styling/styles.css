@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;500;700&family=Poppins:wght@300;400;500&display=swap');
 
+html {
+    scroll-behavior: smooth;
+}
+
 :root{
     --lg-font: 'Kaisei Tokumin', serif;
     --sm-font: 'Poppins', sans-serif;
-    --color: --white;
+    --color: #ffffff;
+    --black: black; /* Bootstrap pink */
 }
 
 
@@ -23,10 +28,26 @@ body {
     font-family: var(--lg-font);
 }
 .nav-link:hover{
-    color: var(--pink)!important;
+    color: var(--black)!important;
 }
 .nav-item{
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+
+#navMenu {
+    background-color: #f8f9fa;
+}
+@media (min-width: 992px) {
+    #navMenu {
+        background-color: transparent;
+    }
+}
+
+/* media queries */
+@media(min-width: 992px){
+    .nav-item{
+        border-bottom: none;
+    }
 }
 
 .login-card {
@@ -44,7 +65,7 @@ body {
       font-family: var(--lg-font);
     }
 
-    /* media queries */
+/* media queries */
 @media(min-width: 992px){
     .nav-item{
         border-bottom: none;
@@ -194,5 +215,12 @@ form .form-control:focus {
     color: white;
 }
 
+#header-user .btn:hover{
+    color:black;
+    background-color : white;
+}
 
-
+#header-admin .btn:hover{
+    color:black;
+    background-color : white;
+}

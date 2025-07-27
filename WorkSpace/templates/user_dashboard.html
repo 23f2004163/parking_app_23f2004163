@@ -70,7 +70,7 @@
                     <p class="card-text mb-3">Price: ₹{{ lot.price }} per hour</p>
                     <div class="d-flex justify-content-between">
                         <a href="{{ url_for('routes.reserve_spot' , lot_id = lot.id)}}" class="btn btn-primary btn-sm ">Book Now</a>
-                        <a href="{{url_for('routes.show_spots' , lot_id = lot.id)}}" class="btn btn-primary btn-sm ms-2">Show Spots</a>
+                        <a href="{{url_for('routes.show_parking_spots' , lot_id = lot.id)}}" class="btn btn-primary btn-sm ms-2">Show Spots</a>
                     </div>
                 </div>
             </div>

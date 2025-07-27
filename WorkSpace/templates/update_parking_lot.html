@@ -11,7 +11,7 @@
     <h3 class="text-center login-title mb-4">Update Parking Lot</h3>
 
     <!-- Make sure to pass lot_id here -->
-    <form method="POST" action="{{ url_for('routes.update', lot_id=parking_lot.id) }}">
+    <form method="POST" action="{{ url_for('routes.update_parking_lot', lot_id=parking_lot.id) }}">
 
       <div class="mb-3">
         <label for="prime_location_name" class="form-label">Prime Location Name</label>
@@ -46,7 +46,7 @@
 
     <div class="mt-3 text-center">
       <small class="text-muted">
-        <a href="{{ url_for('routes.admin') }}">Back to Admin</a>
+        <a href="{{ url_for('routes.admin_dashboard') }}">Back to Admin</a>
       </small>
     </div>
   </div>

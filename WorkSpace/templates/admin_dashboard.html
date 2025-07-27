@@ -37,7 +37,7 @@
 
     <!-- Add Parking Lot Button -->
     <div class="mb-5">
-        <a href="{{ url_for('routes.create_lot')}}" class="btn btn-success px-4 py-2">
+        <a href="{{ url_for('routes.create_parking_lot')}}" class="btn btn-success px-4 py-2">
             + Add Parking Lot
         </a>
     </div>
@@ -72,15 +72,15 @@
             {% for lot in lots %}
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
                 <div class="card shadow-sm w-100" style="max-width: 300px;">
-                    <div class="card-body text-start">
+                    <div class="card-body text-start" id = "parkinglot">
                         <h5 class="card-title fw-bold">{{ lot.prime_location_name }}</h5>
                         <p class="card-text mb-1">Location: {{ lot.address }}</p>
                         <p class="card-text mb-3">Price: ₹{{ lot.price }} per hour</p>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ url_for('routes.update' , lot_id = lot.id)}}" class="btn btn-outline-primary btn-sm">Update</a>
-                            <a href="{{url_for('routes.delete_lot' , lot_id = lot.id)}}" class="btn btn-outline-danger btn-sm ms-2"
+                            <a href="{{ url_for('routes.update_parking_lot' , lot_id = lot.id)}}" class="btn btn-outline-primary btn-sm">Update</a>
+                            <a href="{{url_for('routes.delete_parking_lot' , lot_id = lot.id)}}" class="btn btn-outline-danger btn-sm ms-2"
                                onclick="return confirm('Are you sure you want to delete this parking lot?');">Delete</a>
-                            <a href="{{ url_for('routes.view_spots' , lot_id = lot.id)}}" class="btn btn-outline-primary btn-sm ms-2">View Spot</a>
+                            <a href="{{ url_for('routes.view_parking_spots' , lot_id = lot.id)}}" class="btn btn-outline-primary btn-sm ms-2">View Spot</a>
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                     <span class="badge bg-warning text-dark mb-2 fs-5">Admin Notice </span>
                     <h2 class="display-5 fw-bold">🔥Designed for exclusive parking </h2>
                     <p class="lead mb-4">Cheapest parking lots available and open for booking</p>
-                    <a href="#" class="btn btn-light px-4 py-2 fw-semibold">Explore </a>
+                    <a href="#parkinglot" class="btn btn-light px-4 py-2 fw-semibold">Explore </a>
                 </div>
             </div>
         </div>

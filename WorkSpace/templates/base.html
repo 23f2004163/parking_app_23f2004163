@@ -18,7 +18,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-grey py-3 fixed-top shadow-sm" >
         <div class="container">
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a href="#navMenu" class="navbar-brand d-flex align-items-center">
                 <img src="{{ url_for('static', filename='images/1749905028052k8zk4iza.webp') }}" alt="Logo" style="height: 40px;">
                 <span class="text-uppercase fw-light ms-2">Swift-Park</span>
             </a>
@@ -27,28 +27,28 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navMenu">
+            <div class="collapse navbar-collapse " id="navMenu">
                 <ul class="navbar-nav ms-auto text-center">
                     {% if current_user.is_authenticated %}
                         {% if current_user.role == "admin" %} 
                             <li class="nav-item px-2 py-2">
-                                <a href="{{ url_for('routes.admin') }}" class="nav-link text-uppercase text-dark">Dashboard</a>
+                                <a href="{{ url_for('routes.admin_dashboard') }}" class="nav-link text-uppercase text-dark">Dashboard</a>
                             </li>
                             <li class="nav-item px-2 py-2">
-                                <a href="{{ url_for('routes.all_users')}}" class="nav-link text-uppercase text-dark">Users</a>
+                                <a href="{{ url_for('routes.show_users')}}" class="nav-link text-uppercase text-dark">Users</a>
                             </li>
                             <li class="nav-item px-2 py-2">
-                                <a href="{{ url_for('routes.charts')}}" class="nav-link text-uppercase text-dark">summary</a>
+                                <a href="{{ url_for('routes.admin_charts')}}" class="nav-link text-uppercase text-dark">summary</a>
                             </li>
                         {% else %} 
                             <li class="nav-item px-2 py-2">
-                                <a href="{{ url_for('routes.user') }}" class="nav-link text-uppercase text-dark">Home</a>
+                                <a href="{{ url_for('routes.user_dashboard') }}" class="nav-link text-uppercase text-dark">Home</a>
                             </li>
                             <li class="nav-item px-2 py-2">
                                 <a href="{{ url_for('routes.my_reservations')}}" class="nav-link text-uppercase text-dark">Booked lots</a>
                             </li>
                             <li class="nav-item px-2 py-2">
-                                <a href="{{ url_for('routes.user_history')}}" class="nav-link text-uppercase text-dark">summary</a>
+                                <a href="{{ url_for('routes.user_chart')}}" class="nav-link text-uppercase text-dark">summary</a>
                             </li>
                             <li class="nav-item px-2 py-2">
                                 <a href="{{ url_for('routes.user_profile')}}" class="nav-link text-uppercase text-dark">profile</a>

@@ -2,6 +2,7 @@ from flask import Flask
 from .models import User , db 
 from werkzeug.security import generate_password_hash
 from .configurations import SECRET_KEY 
+from flask_migrate import Migrate 
 
 
 
@@ -20,6 +21,8 @@ def create_app() :
     #initializing database to app
     db.init_app(app) 
     
+    #initializing flask migrate 
+    migrate = Migrate(app , db)
     
     #initializing login manager 
     from flask_login import LoginManager
