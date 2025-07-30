@@ -53,6 +53,7 @@ def admin_dashboard() :
 
 # creating parking lot 
 @routes.route('/admin/create_parking_lot' , methods = ['GET' , 'POST' ]) 
+@login_required
 def create_parking_lot() : 
     
     if request.method == "POST" : 
@@ -80,7 +81,7 @@ def create_parking_lot() :
                 price = price , 
                 address = address , 
                 pin_code = pincode ,
-                maximun_number_of_spots = maximum_number_of_spots
+                maximum_number_of_spots = maximum_number_of_spots
             )
             
             db.session.add(new_parking_lot) 
@@ -117,6 +118,7 @@ def create_parking_lot() :
 
 # Updating Parking lot 
 @routes.route('/admin/update_parking_lot/<int:lot_id>', methods=["GET", "POST"])
+@login_required
 def update_parking_lot(lot_id):
     parking_lot = ParkingLot.query.filter_by(id = lot_id , is_deleted = False).first_or_404()
 
@@ -179,10 +181,15 @@ def delete_parking_lot(lot_id) :
         
         if has_reservations:
             
+            # Soft delete all spots
+            associated_spots = ParkingSpot.query.filter_by(lot_id=lot_id).all()
+            for spot in associated_spots:
+                spot.is_deleted = True
+            
             # we are going to soft delete the lot to maintain the data integrity 
             parking_lot.is_deleted = True
             db.session.commit()
-            flash(f"Hurray ! Parking lot available in {parking_lot.prime_location_name} was archived" , category = 'success')
+            flash(f"Hurray ! Parking lot available in {parking_lot.prime_location_name} was succesfully deleted " , category = 'success')
         
         else : 
                
@@ -206,50 +213,55 @@ def delete_parking_lot(lot_id) :
 
 # view parking spots 
 @routes.route('/admin/view_parking_spots/<int:lot_id>')
+@login_required
 def view_parking_spots(lot_id) : 
     
     parking_lot = ParkingLot.query.filter_by(id = lot_id , is_deleted = False).first_or_404()
-    parking_spots = ParkingSpot.query.filter_by(lot_id = lot_id ).all() 
+    parking_spots = ParkingSpot.query.filter_by(lot_id = lot_id , is_deleted = False).all( ) 
     
     return render_template ('view_parking_spots.html' , parking_lot = parking_lot , spots = parking_spots)
 
 
-
-#deleting parking spot 
-
-@routes.route('/admin/delete_parking_spot/<int:spot_id>' , methods = ["GET"]) 
-def delete_parking_spot(spot_id) : 
-    parking_spot = ParkingSpot.query.get_or_404(spot_id) 
+# delete parking spots
+@routes.route('/admin/delete_parking_spot/<int:spot_id>', methods=["GET"])
+@login_required
+def delete_parking_spot(spot_id):
+    parking_spot = ParkingSpot.query.get_or_404(spot_id)
     parking_lot_id = parking_spot.lot_id
-    
-    
-    
-    #now lets check if the spot is reserved or not 
-    is_reserved = Reservation.query.filter_by(spot_id = parking_spot.id).first() 
-    
-    # if parking spot is occupied , we cannot delete that 
-    if parking_spot.status == 'O' : 
-        flash("Oops! cannot delete this parking spot" , category = 'error') 
-    
-    elif is_reserved : 
-        flash('Oops! cannot delete this spot , it has reservation history' , category = 'error') 
-    
-    else : 
-        
-        try : 
-            
-            db.session.delete(parking_spot) 
-            db.session.commit() 
-            flash("Hurray ! the spot has been deleted successfully" , category = 'success') 
-            
-        except Exception as error : 
-            
+    parking_lot = ParkingLot.query.filter_by(id=parking_lot_id, is_deleted=False).first_or_404()
+
+    # Check if spot is reserved
+    is_reserved = Reservation.query.filter_by(spot_id=parking_spot.id).first()
+
+    if parking_spot.status == 'O':
+        flash("Oops! Cannot delete this parking spot , it's currently occupied.", category='error')
+
+    else:
+        try:
+            if is_reserved:
+                # Soft delete only if there's a reservation history
+                parking_spot.is_deleted = True
+                flash("Spot has reservation history. Soft-deleted successfully.", category='success')
+            else:
+                # Hard delete if it's safe
+                db.session.delete(parking_spot)
+                flash("Spot has been hard-deleted successfully.", category='success')
+
+            db.session.flush()
+
+            # Update spot count (excluding soft-deleted ones)
+            parking_lot.maximum_number_of_spots = ParkingSpot.query.filter_by(
+                lot_id=parking_lot.id, is_deleted=False
+            ).count()
+
+            db.session.commit()
+
+        except Exception as error:
             db.session.rollback()
-            print("Deletion error :" , error) 
-            flash("something went wrong while deleting the spot!" , category = 'error')
-            
-    
-    return redirect(url_for('routes.view_parking_spots' , lot_id = parking_lot_id)) # providing lot id over here will ensure that after deleting the spot , we stay intact inside of the parking lot 
+            print("Deletion error:", error)
+            flash("Something went wrong while deleting the spot!", category='error')
+
+    return redirect(url_for('routes.view_parking_spots', lot_id=parking_lot_id))
             
             
         
@@ -268,6 +280,7 @@ def show_users() :
 # summary charts - admin panel 
 
 @routes.route('/admin/admin_charts') 
+@login_required
 def admin_charts() : 
     
     # chart 1 : for reservation per parking lot  
@@ -288,8 +301,8 @@ def admin_charts() :
     
     #chart 2 : Booked spots vs available spots 
     
-    total_spots = db.session.query(ParkingSpot).count()
-    booked_spots = db.session.query(ParkingSpot).filter(ParkingSpot.status == 'O').count() 
+    total_spots = db.session.query(ParkingSpot).filter_by(is_deleted = False).count()
+    booked_spots = db.session.query(ParkingSpot).filter(ParkingSpot.status == 'O' , ParkingSpot.is_deleted == False).count() 
     available_spots = total_spots - booked_spots 
     
     
@@ -303,6 +316,7 @@ def admin_charts() :
 # search functionalities 
 
 @routes.route('/admin/search_form' , methods = ["GET" , "POST"])
+@login_required
 def admin_search_form() : 
     
     search_query = request.args.get('search', '').strip().lower() 
@@ -366,6 +380,7 @@ def user_profile() :
 #update user profile 
 
 @routes.route('/user/update_profile' , methods = ['GET' , 'POST']) 
+@login_required
 def update_profile() : 
     
     if request.method == "POST" :
@@ -412,7 +427,7 @@ def update_profile() :
 
 def show_parking_spots(lot_id) : 
     
-    parking_spots = ParkingSpot.query.filter_by(lot_id = lot_id , status = "F").all() 
+    parking_spots = ParkingSpot.query.filter_by(lot_id = lot_id , status = "F" , is_deleted = False).all() 
     parking_lot = ParkingLot.query.filter_by(id = lot_id , is_deleted = False).first_or_404() 
     
     return render_template('show_parking_spots.html' , spots = parking_spots , parking_lot = parking_lot) 

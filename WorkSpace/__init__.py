@@ -1,7 +1,7 @@
 from flask import Flask 
 from .models import User , db 
 from werkzeug.security import generate_password_hash
-from .configurations import SECRET_KEY 
+from .configurations import SECRET_KEY , DB
 from flask_migrate import Migrate 
 
 
@@ -14,7 +14,7 @@ def create_app() :
     
     #load configurations 
     app.config['SECRET_KEY'] = SECRET_KEY
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # we can avoid tracking modifications of objects 
     
     

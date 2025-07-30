@@ -38,7 +38,7 @@ class ParkingLot(db.Model):
     price = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(250), nullable=False)
     pin_code = db.Column(db.Integer, nullable=False)
-    maximun_number_of_spots = db.Column(db.Integer, nullable=False)
+    maximum_number_of_spots = db.Column(db.Integer, nullable=False)
     is_deleted = db.Column(db.Boolean , default = False , nullable = False)
 
     spots = db.relationship('ParkingSpot', backref='lot', lazy=True)
@@ -52,6 +52,7 @@ class ParkingSpot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     lot_id = db.Column(db.Integer, db.ForeignKey('parking_lot.id'), nullable=False)
     status = db.Column(db.String(1), nullable=False)  # 'F' or 'O'
+    is_deleted = db.Column(db.Boolean , default = False , nullable = False)
 
     reservations = db.relationship('Reservation', backref='spot', lazy=True)
 
